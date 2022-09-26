@@ -1,8 +1,8 @@
-def parse_reverse_polish(regular, accept_states,
+def parse_reverse_polish(regex, accept_states,
                          states, transitions):
     operators = ('+', '*', '^+', '^*')
     degrees = ('^' + str(i) for i in range(100))
-    operands_and_operators = regular.split()
+    operands_and_operators = regex.split()
     states_cnt = 0
 
     stack = []

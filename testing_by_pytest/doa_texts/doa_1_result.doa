@@ -1,0 +1,14 @@
+DOA: v1
+Start: 0
+Acceptance: 3
+--BEGIN--
+State: 0
+ -> ab 1
+State: 1
+ -> EPS 0
+ -> EPS 2
+State: 2
+ -> aab 3
+State: 3
+ -> EPS 2
+--END--
