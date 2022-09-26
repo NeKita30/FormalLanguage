@@ -80,7 +80,7 @@ def operator_kleene_plus(states, stack, states_cnt, transitions, result_states):
     operand = stack.pop()
     if isinstance(operand, str):
         states.append(str(states_cnt))
-        stack.append(str(states_cnt + 1))
+        states.append(str(states_cnt + 1))
         transitions[str(states_cnt)][operand] = \
             transitions.setdefault(str(states_cnt), dict()).setdefault(operand, []) + [str(states_cnt + 1)]
         transitions[str(states_cnt + 1)]['EPS'] = \
