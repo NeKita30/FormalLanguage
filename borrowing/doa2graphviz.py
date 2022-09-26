@@ -58,16 +58,20 @@ def parse_body(f):
     return transitions
 
 
-def main(path: str):
-    with open(path) as f:
+# modified by nekita
+def make_graphviz(path_to_read: str, path_to_write: str = ""):
+    with open(path_to_read) as f:
         parse_doa(f)
         start = parse_start(f)
         terminal = parse_terminal(f)
         transitions = parse_body(f)
+    if path_to_write != "":
+        sys.stdout = open(path_to_write, 'w')
 
     print("digraph {")
     for state in terminal:
         print(f"{state} [style = \"filled\"]")
+    print(f"{start} [style = \"bold\"]")
     for state, word, to in transitions:
         print(f"{state} -> {to} [label = \"{word if word != 'EPS' else 'ɛ'}\"]")
     print("}")
@@ -77,4 +81,4 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: doa2graphviz file")
     else:
-        main(sys.argv[1])
+        make_graphviz(sys.argv[1])
