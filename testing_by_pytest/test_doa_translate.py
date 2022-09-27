@@ -2,9 +2,9 @@ from sources.DFA import NFA
 
 
 def test_trans_2_doa():
-    m = NFA.NFA("abcdefg", "ab ^+ aab ^+ *")
+    m = NFA.NFA(regex="ab ^+ aab ^+ *")
     m.translate_to_doa("borrowing/popyt.doa")
-    m1 = NFA.NFA("abcdefg", "b ^* b ^* a * b ^* * a * b ^* * ^* +")
+    m1 = NFA.NFA(regex="b ^* b ^* a * b ^* * a * b ^* * ^* +")
     m1.translate_to_doa("borrowing/popyt2")
 
 

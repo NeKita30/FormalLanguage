@@ -3,7 +3,7 @@ from sources.DFA import translaters
 
 
 class NFA:
-    def __init__(self, alphabet="", regex="", doa_file=""):
+    def __init__(self, alphabet=None, regex="", doa_file=""):
         self.states = list()
         self.alphabet = alphabet
         self.transitions = dict()
@@ -24,11 +24,24 @@ class NFA:
         pass
 
     def __read_regex(self, regex):
-        self.start_state = parsers.parse_reverse_polish(regex, self.accept_states,
+        flag_check_alphabet = False
+        check_alphabet = set()
+        if self.alphabet is not None:
+            flag_check_alphabet = True
+            check_alphabet = set(self.alphabet)
+
+        self.start_state = parsers.parse_reverse_polish(regex, flag_check_alphabet, check_alphabet, self.accept_states,
                                                         self.states, self.transitions)
+        self.alphabet = ''.join(check_alphabet)
 
     def __read_doa(self, file):
         with open(file, 'r') as file:
+            flag_check_alphabet = False
+            if self.alphabet is not None:
+                flag_check_alphabet = True
+            else:
+                self.alphabet = ""
+
             version = file.readline().strip()
             if not version.startswith('DOA:'):
                 raise Exception(f"Should contain 'DOA:', got {version}")
@@ -44,6 +57,7 @@ class NFA:
 
             accept = accept[len('Acceptance:'):]
             self.accept_states = [state.strip() for state in accept.split('&')]
+            self.accept_states = list(set(self.accept_states))
 
             lines = [line.strip() for line in file.readlines()]
             if not lines[0] == '--BEGIN--':
@@ -65,4 +79,12 @@ class NFA:
                         if not line.startswith('->'):
                             raise Exception(f"Transitions description should contain '->, got {line}'")
                         word, to = [s.strip() for s in line.split()][1:]
+                        if word != 'EPS':
+                            for letter in word:
+                                if flag_check_alphabet:
+                                    if letter not in self.alphabet:
+                                        raise Exception(f"Letter '{letter}' not in alphabet '{self.alphabet}'")
+                                else:
+                                    self.alphabet += letter
+
                         self.transitions[q][word] = self.transitions.setdefault(q, dict()).setdefault(word, []) + [to]

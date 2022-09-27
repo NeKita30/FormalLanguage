@@ -2,11 +2,11 @@ from sources.DFA import NFA
 
 
 def test_rev_pol_plus():
-    m1 = NFA.NFA('abcdefg', 'a b +')
+    m1 = NFA.NFA(regex='a b +')
     assert m1.transitions['0']['a'] == ['1']
     assert m1.transitions['0']['b'] == ['1']
 
-    m2 = NFA.NFA('abcdefg', 'a b + c +')
+    m2 = NFA.NFA(regex='a b + c +')
     assert m2.transitions['2']['EPS'] == ['0']
     assert m2.transitions['2']['c'] == ['3']
     assert m2.transitions['0']['a'] == ['1']
@@ -14,22 +14,22 @@ def test_rev_pol_plus():
 
 
 def test_rev_pol_mult():
-    m1 = NFA.NFA('abcdefg', 'a b *')
+    m1 = NFA.NFA(regex='a b *')
     assert m1.transitions['2']['a'] == ['0']
     assert m1.transitions['0']['b'] == ['1']
 
-    m2 = NFA.NFA('abcdefg', 'a b + c *')
+    m2 = NFA.NFA(regex='a b + c *')
     assert m2.transitions['1']['EPS'] == ['2']
     assert m2.transitions['2']['c'] == ['3']
     assert m2.transitions['0']['a'] == ['1']
     assert m2.transitions['0']['b'] == ['1']
 
-    m3 = NFA.NFA('abcdefg', 'c a b + *')
+    m3 = NFA.NFA(regex='c a b + *')
     assert m3.transitions['2']['c'] == ['0']
     assert m3.transitions['0']['a'] == ['1']
     assert m3.transitions['0']['b'] == ['1']
 
-    m4 = NFA.NFA('abcdefg', 'a b + c d + *')
+    m4 = NFA.NFA(regex='a b + c d + *')
     assert m4.transitions['1']['EPS'] == ['2']
     assert m4.transitions['0']['a'] == ['1']
     assert m4.transitions['0']['b'] == ['1']
@@ -38,11 +38,11 @@ def test_rev_pol_mult():
 
 
 def test_rev_pol_kleene_plus():
-    m1 = NFA.NFA('abcdefg', 'a ^+')
+    m1 = NFA.NFA(regex='a ^+')
     assert m1.transitions['0']['a'] == ['1']
     assert m1.transitions['1']['EPS'] == ['0']
 
-    m2 = NFA.NFA('abcdefg', 'c a b + * ^+')
+    m2 = NFA.NFA(regex='c a b + * ^+')
     assert m2.transitions['2']['c'] == ['0']
     assert m2.transitions['0']['a'] == ['1']
     assert m2.transitions['0']['b'] == ['1']
@@ -50,10 +50,10 @@ def test_rev_pol_kleene_plus():
 
 
 def test_rev_pol_kleene_star():
-    m1 = NFA.NFA('abcdefg', 'a ^*')
+    m1 = NFA.NFA(regex='a ^*')
     assert m1.transitions['0']['a'] == ['0']
 
-    m2 = NFA.NFA('abcdefg', 'a b * c + ^*')
+    m2 = NFA.NFA(regex='a b * c + ^*')
     assert m2.transitions['2']['a'] == ['0']
     assert m2.transitions['0']['b'] == ['1']
     assert m2.transitions['3']['EPS'] == ['2']

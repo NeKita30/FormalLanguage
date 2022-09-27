@@ -1,4 +1,4 @@
-def parse_reverse_polish(regex, accept_states,
+def parse_reverse_polish(regex, flag_check_alphabet, alphabet, accept_states,
                          states, transitions):
     operators = ('+', '*', '^+', '^*')
     degrees = ('^' + str(i) for i in range(100))
@@ -8,6 +8,13 @@ def parse_reverse_polish(regex, accept_states,
     stack = []
     for item in operands_and_operators:
         if item not in operators and item not in degrees:
+            if item != 'EPS':
+                for letter in item:
+                    if flag_check_alphabet:
+                        if letter not in alphabet:
+                            raise Exception(f"Letter '{letter}' not in alphabet '{''.join(alphabet)}'")
+                    else:
+                        alphabet.add(letter)
             stack.append(item)
         else:
             result_states = [None, None]
