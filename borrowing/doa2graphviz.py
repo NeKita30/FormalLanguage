@@ -60,7 +60,9 @@ def parse_body(f):
 
 # modified by nekita
 def make_graphviz(path_to_read: str, path_to_write: str = ""):
-    with open(path_to_read) as f:
+    if path_to_read[-4:] != ".doa":
+        path_to_read += ".doa"
+    with open(path_to_read, 'r') as f:
         parse_doa(f)
         start = parse_start(f)
         terminal = parse_terminal(f)
