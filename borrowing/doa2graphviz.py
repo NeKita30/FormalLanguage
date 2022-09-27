@@ -72,10 +72,10 @@ def make_graphviz(path_to_read: str, path_to_write: str = ""):
 
     print("digraph {")
     for state in terminal:
-        print(f"{state} [style = \"filled\"]")
-    print(f"{start} [style = \"bold\"]")
+        print(f"\"{state}\" [style = \"filled\"]")
+    print(f"\"{start}\" [style = \"bold\"]")
     for state, word, to in transitions:
-        print(f"{state} -> {to} [label = \"{word if word != 'EPS' else 'ɛ'}\"]")
+        print(f"\"{state}\" -> \"{to}\" [label = \"{word if word != 'EPS' else 'ɛ'}\"]")
     print("}")
 
 

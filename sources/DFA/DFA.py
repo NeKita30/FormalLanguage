@@ -18,7 +18,61 @@ class DFA(NFA.NFA):
         self.__delete_eps_transitions()
 
     def __make_determined(self):
-        pass
+        new_states = self.states.copy()
+        new_accept_states = self.accept_states.copy()
+        states_to_add_in_tompson_table = list()
+        tompson = dict()
+
+        for state in self.states:
+            tompson[state] = dict()
+            for letter in self.alphabet:
+                if letter in self.transitions[state]:
+                    new_state = "_".join(sorted(self.transitions[state][letter]))
+                    tompson[state][letter] = [new_state]
+                    if new_state not in states_to_add_in_tompson_table and new_state not in new_states:
+                        states_to_add_in_tompson_table.append(new_state)
+                        new_states.append(new_state)
+                else:
+                    tompson[state][letter] = [""]
+        while states_to_add_in_tompson_table:
+            state = states_to_add_in_tompson_table[0]
+            tompson[state] = dict()
+            states_included = state.split('_')
+            for letter in self.alphabet:
+                result = ""
+                for sub_state in states_included:
+                    if result and tompson[sub_state][letter][0]:
+                        result += '_'
+                    result += tompson[sub_state][letter][0]
+                result = '_'.join(sorted(set(result.split('_'))))
+                result = "" if result == " " else result
+                if result != "" and result not in states_to_add_in_tompson_table and result not in new_states:
+                    states_to_add_in_tompson_table.append(result)
+                    new_states.append(result)
+                tompson[state][letter] = [result]
+            states_to_add_in_tompson_table.pop(0)
+        self.transitions = tompson
+        for accept in self.accept_states:
+            for new_state in new_states:
+                if accept in new_state.split('_') and new_state not in new_accept_states:
+                    new_accept_states.append(new_state)
+
+        self.accept_states = new_accept_states
+        self.__dfs_deleting_unreached(tompson, new_states)
+        self.transitions = tompson
+        self.states = new_states
+
+        flag_added_new_ways = False
+        self.states.append('X')
+        self.transitions['X'] = dict()
+        for q in self.states:
+            for letter in self.alphabet:
+                if self.transitions[q].get(letter, ['']) == ['']:
+                    flag_added_new_ways |= q != 'X'
+                    self.transitions[q][letter] = ['X']
+        if not flag_added_new_ways:
+            self.states.pop()
+            self.transitions.popitem()
 
     def __make_one_or_zero_letter_transitions(self):
         state_cnt = len(self.states)
@@ -90,24 +144,26 @@ class DFA(NFA.NFA):
                     new_transitions[q_from]['EPS'].remove(q_sep)
                 new_transitions[q_from].pop('EPS')
 
-        used = list()
-        self.__dfs_deleting_unreached(used, new_transitions, self.start_state)
-        new_states = self.states.copy()
-        for q in self.states:
-            if q not in used:
-                new_states.remove(q)
-                if q in self.accept_states:
-                    self.accept_states.remove(q)
-                if new_transitions.get(q, False):
-                    new_transitions.pop(q)
-
+        new_states = self.states
+        self.__dfs_deleting_unreached(new_transitions, new_states)
         self.transitions = new_transitions
         self.states = new_states
 
-    def __dfs_deleting_unreached(self, used, transitions, q):
+    def __dfs_deleting_unreached(self, transitions, states):
+        used = list()
+        self.__dfs_for_deleting(used, transitions, self.start_state)
+        for q in self.states:
+            if q not in used:
+                states.remove(q)
+                if q in self.accept_states:
+                    self.accept_states.remove(q)
+                if transitions.get(q, False):
+                    transitions.pop(q)
+
+    def __dfs_for_deleting(self, used, transitions, q):
         used.append(q)
         if transitions.get(q, False):
             for letter in transitions[q]:
                 for p in transitions[q][letter]:
                     if p not in used:
-                        self.__dfs_deleting_unreached(used, transitions, p)
+                        self.__dfs_for_deleting(used, transitions, p)
