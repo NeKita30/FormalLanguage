@@ -17,6 +17,11 @@ class DFA(NFA.NFA):
         self.__delete_eps_transitions()
 
     def __make_determined(self):
+
+        for q in self.states:
+            if q not in self.transitions:
+                self.transitions[q] = dict()
+
         new_states = self.states.copy()
         new_accept_states = self.accept_states.copy()
         states_to_add_in_tompson_table = list()
@@ -32,7 +37,7 @@ class DFA(NFA.NFA):
                         states_to_add_in_tompson_table.append(new_state)
                         new_states.append(new_state)
                 else:
-                    tompson[state][letter] = [""]
+                    tompson[state][letter] = []
         while states_to_add_in_tompson_table:
             state = states_to_add_in_tompson_table[0]
             tompson[state] = dict()
@@ -40,15 +45,18 @@ class DFA(NFA.NFA):
             for letter in self.alphabet:
                 result = ""
                 for sub_state in states_included:
-                    if result and tompson[sub_state][letter][0]:
-                        result += '_'
-                    result += tompson[sub_state][letter][0]
+                    if tompson[sub_state][letter]:
+                        if result:
+                            result += '_'
+                        result += tompson[sub_state][letter][0]
                 result = '_'.join(sorted(set(result.split('_'))))
-                result = "" if result == " " else result
-                if result != "" and result not in states_to_add_in_tompson_table and result not in new_states:
+                result = None if result == "" else result
+                if result is not None and result not in states_to_add_in_tompson_table and result not in new_states:
                     states_to_add_in_tompson_table.append(result)
                     new_states.append(result)
-                tompson[state][letter] = [result]
+                tompson[state][letter] = list()
+                if result:
+                    tompson[state][letter] = [result]
             states_to_add_in_tompson_table.pop(0)
         self.transitions = tompson
         for accept in self.accept_states:
@@ -61,12 +69,13 @@ class DFA(NFA.NFA):
         self.transitions = tompson
         self.states = new_states
 
+    def make_complete_dfa(self):
         flag_added_new_ways = False
         self.states.append('X')
         self.transitions['X'] = dict()
         for q in self.states:
             for letter in self.alphabet:
-                if self.transitions[q].get(letter, ['']) == ['']:
+                if not self.transitions[q].get(letter, []):
                     flag_added_new_ways |= q != 'X'
                     self.transitions[q][letter] = ['X']
         if not flag_added_new_ways:
