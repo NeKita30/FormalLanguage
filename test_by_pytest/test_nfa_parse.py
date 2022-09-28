@@ -60,3 +60,14 @@ def test_rev_pol_kleene_star():
     assert m2.transitions['3']['c'] == ['4']
     assert m2.transitions['4']['EPS'] in [['3', '6'], ['6', '3']]
     assert m2.transitions['5']['EPS'] in [['3', '6'], ['6', '3']]
+
+
+def test_one_word_parse():
+    m1 = NFA.NFA(regex='a')
+    assert m1.states == ['0', '1']
+    assert m1.transitions['0']['a'] == ['1']
+
+    m2 = NFA.NFA(regex="EPS")
+    assert m2.states == ['0', '1']
+    assert m2.transitions['0']['EPS'] == ['1']
+

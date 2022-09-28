@@ -1,4 +1,3 @@
-from sources.DFA import translaters
 from sources.DFA import NFA
 import copy
 
@@ -144,7 +143,7 @@ class DFA(NFA.NFA):
                     new_transitions[q_from]['EPS'].remove(q_sep)
                 new_transitions[q_from].pop('EPS')
 
-        new_states = self.states
+        new_states = self.states.copy()
         self.__dfs_deleting_unreached(new_transitions, new_states)
         self.transitions = new_transitions
         self.states = new_states

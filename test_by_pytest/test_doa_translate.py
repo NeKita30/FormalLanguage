@@ -9,8 +9,8 @@ def test_trans_2_doa():
 
 
 def test_trans_from_doa():
-    m = NFA.NFA(doa_file="testing_by_pytest/doa_texts/doa_1.doa")
-    m.translate_to_doa("testing_by_pytest/doa_texts/doa_1_result")
+    m = NFA.NFA(doa_file="test_by_pytest/doa_texts/doa_1.doa")
+    m.translate_to_doa("test_by_pytest/doa_texts/doa_1_result")
 
-    m1 = NFA.NFA(doa_file="testing_by_pytest/doa_texts/doa_2.doa")
-    m1.translate_to_doa("testing_by_pytest/doa_texts/doa_2_result")
+    m1 = NFA.NFA(doa_file="test_by_pytest/doa_texts/doa_2.doa")
+    m1.translate_to_doa("test_by_pytest/doa_texts/doa_2_result")

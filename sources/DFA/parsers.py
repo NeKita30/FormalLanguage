@@ -27,6 +27,14 @@ def parse_reverse_polish(regex, flag_check_alphabet, alphabet, accept_states,
             elif item == '^*':
                 states_cnt += operator_kleene_star(states, stack, states_cnt, transitions, result_states)
             stack.append(tuple(result_states))
+    if len(stack) > 1:
+        raise Exception(f"Error during parsing regex '{regex}', unparsed: {stack}")
+    if not isinstance(stack[0], tuple):
+        transitions[str(states_cnt)] = dict()
+        transitions[str(states_cnt)][stack.pop()] = [str(states_cnt + 1)]
+        states.append(str(states_cnt))
+        states.append(str(states_cnt + 1))
+        stack.append((str(states_cnt), str(states_cnt + 1)))
     start, end = stack.pop()
     accept_states.append(end)
     return start
