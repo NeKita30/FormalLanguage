@@ -1,5 +1,5 @@
-from sources.DFA import parsers
-from sources.DFA import translaters
+from sources.Machines import parsers
+from sources.Machines import translaters
 
 
 class NFA:

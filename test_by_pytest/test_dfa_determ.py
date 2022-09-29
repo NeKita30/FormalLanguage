@@ -1,9 +1,9 @@
-from sources.DFA import DFA
+from sources.Machines import DFA
 
 
 def test_dfa_determ_one(mocker):
-    mocker.patch('sources.DFA.DFA.DFA._DFA__make_one_letter_transitions')
-    mocker.patch('sources.DFA.DFA.DFA._DFA__dfs_deleting_unreached')
+    mocker.patch('sources.Machines.DFA.DFA._DFA__make_one_letter_transitions')
+    mocker.patch('sources.Machines.DFA.DFA._DFA__dfs_deleting_unreached')
 
     dfa = DFA.DFA(alphabet='ab', doa_file="test_by_pytest/doa_texts/dfa_test_determ.doa")
 

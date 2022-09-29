@@ -1,4 +1,4 @@
-from sources.DFA import NFA, DFA
+from sources.Machines import NFA, DFA
 import borrowing.doa2graphviz
 import argparse
 import os

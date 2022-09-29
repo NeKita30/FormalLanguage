@@ -1,4 +1,4 @@
-from sources.DFA import NFA
+from sources.Machines import NFA
 
 
 def test_rev_pol_plus():

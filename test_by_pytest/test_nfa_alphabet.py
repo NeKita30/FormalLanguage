@@ -1,6 +1,6 @@
 import pytest
 
-from sources.DFA import NFA
+from sources.Machines import NFA
 
 
 def test_alphabet_good():
