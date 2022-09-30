@@ -1,5 +1,4 @@
-from sources.Machines import parsers
-from sources.Machines import translaters
+from sources.parse_and_translate import parsers, translaters
 
 
 class NFA:

@@ -3,9 +3,10 @@ import copy
 
 
 class DFA(NFA.NFA):
-    def __init__(self, alphabet=None, regular="", doa_file=""):
+    def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True):
         super().__init__(alphabet, regular, doa_file)
-        self.__make_dka()
+        if to_dfa:
+            self.__make_dka()
 
     def __make_dka(self):
         self.__make_one_letter_transitions()
@@ -71,13 +72,16 @@ class DFA(NFA.NFA):
 
     def make_complete_dfa(self):
         flag_added_new_ways = False
-        self.states.append('X')
-        self.transitions['X'] = dict()
+        trsh = 'X'
+        while trsh in self.states:
+            trsh += 'X'
+        self.states.append(trsh)
+        self.transitions[trsh] = dict()
         for q in self.states:
             for letter in self.alphabet:
                 if not self.transitions[q].get(letter, []):
-                    flag_added_new_ways |= q != 'X'
-                    self.transitions[q][letter] = ['X']
+                    flag_added_new_ways |= q != trsh
+                    self.transitions[q][letter] = [trsh]
         if not flag_added_new_ways:
             self.states.pop()
             self.transitions.popitem()
