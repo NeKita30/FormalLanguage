@@ -3,19 +3,25 @@ import copy
 
 
 class DFA(NFA.NFA):
-    def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True):
+    def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True, study_mode=""):
         super().__init__(alphabet, regular, doa_file)
         if to_dfa:
-            self.__make_dka()
+            self.__make_dka(study_mode)
 
-    def __make_dka(self):
-        self.__make_one_letter_transitions()
+    def __make_dka(self, study_mode):
+        self.__make_one_letter_transitions(study_mode)
         self.__make_determined()
+        if study_mode:
+            self.translate_to_doa(study_mode+"/DFA.doa")
 
-    def __make_one_letter_transitions(self):
+    def __make_one_letter_transitions(self, study_mode):
         self.__make_one_or_zero_letter_transitions()
+        if study_mode:
+            self.translate_to_doa(study_mode+"/one_zero_letter_NFA.doa")
         self.__compress_eps_transitions()
         self.__delete_eps_transitions()
+        if study_mode:
+            self.translate_to_doa(study_mode+"/one_letter_NFA.doa")
 
     def __make_determined(self):
 
@@ -70,7 +76,7 @@ class DFA(NFA.NFA):
         self.transitions = tompson
         self.states = new_states
 
-    def make_complete_dfa(self):
+    def make_complete_dfa(self, study_mode=""):
         flag_added_new_ways = False
         trsh = 'X'
         while trsh in self.states:
@@ -85,6 +91,8 @@ class DFA(NFA.NFA):
         if not flag_added_new_ways:
             self.states.pop()
             self.transitions.popitem()
+        if study_mode:
+            self.translate_to_doa(study_mode+"/CDFA.doa")
 
     def __make_one_or_zero_letter_transitions(self):
         state_cnt = len(self.states)
