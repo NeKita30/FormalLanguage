@@ -46,3 +46,10 @@ options:
 Example (write command in root of project):  
 `python3 regex2machine.py --alphabet="abc" --regex="ab ^* c + ab EPS + *" -cdfa -doa --doa_name="my_doa.doa"`  
 It will make a NFA fron regex ((ab)* + c)(ab + ε), then build CDFA and write it's descriptions in my_doa.doa
+
+
+### To run test:
+(write commands in root of project)  
+`pytest --cov=sources.Machines -vv` (classical way)  
+`coverage run --source=sources.Machines -m pytest -vv test_by_pytest && coverage report -m`
+(this command shows missing lines)
