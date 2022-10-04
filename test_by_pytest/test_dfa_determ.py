@@ -25,6 +25,13 @@ def test_dfa_completes():
     assert set(dfa.states) == {'0', '3', '4', '5', '1_2', '4_6', '5_6', '2_4_6', '4_5_6', 'X'}
     assert dfa.transitions['5_6']['a'] == ['X']
 
+    dfa = DFA.DFA(alphabet="ab", doa_file="test_by_pytest/doa_texts/dfa_test_unusual.doa", to_dfa=False)
+    dfa.make_complete_dfa()
+    assert set(dfa.states) == {'0', '1', 'X', 'XX'}
+    assert set(dfa.transitions['0']['b']) == {'XX',}
+    assert set(dfa.transitions['X']['b']) == {'XX',}
+    assert set(dfa.transitions['XX']['a']) == {'XX',}
+
 
 def test_dfa_determ_two(mocker):
     dfa = DFA.DFA(alphabet='ab', doa_file="test_by_pytest/doa_texts/dfa_test_determ_unchanged.doa")

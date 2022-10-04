@@ -95,7 +95,7 @@ class DFA(NFA.NFA):
         self.transitions[trsh] = dict()
         for q in self.states:
             for letter in self.alphabet:
-                if not self.transitions[q].get(letter, []):
+                if not self.transitions.setdefault(q, dict()).setdefault(letter, []):
                     flag_added_new_ways |= q != trsh
                     self.transitions[q][letter] = [trsh]
         if not flag_added_new_ways:

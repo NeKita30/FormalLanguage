@@ -36,6 +36,7 @@ class NFA:
                         used.append(q)
                         if self.recognize(w, q_to, used):
                             return True
+        return False
 
     def __read_regex(self, regex):
         flag_check_alphabet = False

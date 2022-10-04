@@ -1,1 +1,1 @@
-__all__ = ['NFA']
+__all__ = ['NFA', 'DFA', 'MinCDFA']
