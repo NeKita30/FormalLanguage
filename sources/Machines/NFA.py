@@ -19,8 +19,31 @@ class NFA:
     def translate_to_doa(self, file):
         translaters.translate_to_doa(file, self.states, self.transitions, self.start_state, self.accept_states)
 
-    def recognize(self, w):
-        pass
+    def recognize(self, w, q=None, used=None):
+        if q is None:
+            q = self.start_state
+        if w:
+            for trans in self.transitions.get(q, []):
+                for q_to in self.transitions[q][trans]:
+                    if w.startswith(trans):
+                        if self.recognize(w[len(trans):], q_to):
+                            return True
+                    if trans == 'EPS':
+                        if self.recognize(w, q_to):
+                            return True
+            return False
+        if q in self.accept_states:
+            return True
+        else:
+            if used is None:
+                used = list()
+            if q not in used:
+                used.append(q)
+                if "EPS" in self.transitions.get(q, []):
+                    for q_to in self.transitions[q]["EPS"]:
+                        if self.recognize(w, q_to, used):
+                            return True
+            return False
 
     def __read_regex(self, regex):
         flag_check_alphabet = False
