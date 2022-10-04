@@ -5,13 +5,14 @@ import os
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--alphabet", required=False, default=None, type=str)
-parser.add_argument("--nfa_doa", required=True, type=str)
-parser.add_argument("-cdfa", action='store_true')
-parser.add_argument("-mincdfa", action='store_true')
-parser.add_argument("--dfa_doa", required=False, default="doa_formatп.doa", type=str)
-parser.add_argument("-graph", action='store_true')
-parser.add_argument("--graph_name", required=False, default="", type=str)
+parser.add_argument("--alphabet", required=False, default=None, type=str, help="Alphabet")
+parser.add_argument("--nfa_doa", required=True, type=str, help="NFA .doa file")
+parser.add_argument("-cdfa", action='store_true', help="To make CDFA")
+parser.add_argument("-mincdfa", action='store_true', help="To make MinCDFA")
+parser.add_argument("--dfa_doa", required=False, default="doa_formatп.doa", type=str, help="Name of .doa output file")
+parser.add_argument("-graph", action='store_true', help="To make graphviz")
+parser.add_argument("--graph_name", required=False, default="", type=str,
+                    help="Name of graphviz output file, requires -graph. By default writes in terminal")
 args = parser.parse_args()
 
 if args.mincdfa:
