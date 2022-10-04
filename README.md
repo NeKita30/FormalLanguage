@@ -45,4 +45,4 @@ options:
 
 Example (write command in root of project):  
 `python3 regex2machine.py --alphabet="abc" --regex="ab ^* c + ab EPS + *" -cdfa -doa --doa_name="my_doa.doa"`  
-It will make a NFA fron regex ((ab)^* + c)(ab + ε), then build CDFA and write it's descriptions in my_doa.doa
+It will make a NFA fron regex ((ab)* + c)(ab + ε), then build CDFA and write it's descriptions in my_doa.doa
