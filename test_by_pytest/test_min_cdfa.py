@@ -19,4 +19,4 @@ def test_min_cdfa_make_min():
 def test_min_cdfa_global():
     mcdfa = MinCDFA.MinCDFA(doa_file='test_by_pytest/doa_texts/mincdfa_doa_globaltest.doa')
 
-    mcdfa.translate_to_doa('just_graph')
+

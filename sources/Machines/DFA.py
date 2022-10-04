@@ -8,6 +8,16 @@ class DFA(NFA.NFA):
         if to_dfa:
             self.__make_dka(study_mode)
 
+    def recognize(self, w, q=None, used=None):
+        q = self.start_state
+        for letter in w:
+            if letter not in self.alphabet:
+                break
+            q = self.transitions[q][letter][0]
+        else:
+            return q in self.accept_states
+        return False
+
     def __make_dka(self, study_mode):
         self.__make_one_letter_transitions(study_mode)
         self.__make_determined()
