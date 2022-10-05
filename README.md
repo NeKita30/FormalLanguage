@@ -1,9 +1,9 @@
-Formal Language Practical Tasks
+# Formal Language Practical Tasks
 
-Programming languages used: Python 3.9
+Programming languages used: Python 3.9  
 Test tools: pytest, pytest-cov
 
-Tasks completed:
+Tasks completed:  
 NFA to DFA, MinDFA
 
 To convert NFA to DFA, CDFA, MinCDFA, use `nfa2dfa.py`:
@@ -53,3 +53,9 @@ It will make a NFA fron regex ((ab)* + c)(ab + ε), then build CDFA and write it
 `pytest --cov=sources.Machines -vv` (classical way)  
 `coverage run --source=sources.Machines -m pytest -vv test_by_pytest && coverage report -m`
 (this command shows missing lines)
+
+### Structure:
+`sources.Machines`: `NFA.py, DFA.py and MinCDFA.py`  
+`sources.parse_and_translate`: parsing (regex <-> nfa), translation (.doa <-> machine)  
+`test_by_pytest`: pytests and .doa files for tests  
+`borrowing`: Mikhail's code of translation (with my modifications)

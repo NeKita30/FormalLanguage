@@ -3,12 +3,17 @@ import copy
 
 
 class DFA(NFA.NFA):
+    """DFA. Can be build as NFA, in both ways
+    Can be made completed
+    Can recognize words (another implementation)
+    """
     def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True, study_mode=""):
         super().__init__(alphabet, regular, doa_file)
         if to_dfa:
-            self.__make_dka(study_mode)
+            self.__make_dfa(study_mode)
 
     def recognize(self, w, q=None, used=None):
+        """Check is word w in language or not"""
         q = self.start_state
         for letter in w:
             if letter not in self.alphabet:
@@ -18,13 +23,16 @@ class DFA(NFA.NFA):
             return q in self.accept_states
         return False
 
-    def __make_dka(self, study_mode):
+    def __make_dfa(self, study_mode):
+        """Make DFA
+        NFA -> 1-letter NFA, Tompson's alg."""
         self.__make_one_letter_transitions(study_mode)
         self.__make_determined()
         if study_mode:
             self.translate_to_doa(study_mode+"/DFA.doa")
 
     def __make_one_letter_transitions(self, study_mode):
+        """Make <=1-letter NFA, then 1-letter NFA"""
         self.__make_one_or_zero_letter_transitions()
         if study_mode:
             self.translate_to_doa(study_mode+"/one_zero_letter_NFA.doa")
@@ -34,7 +42,7 @@ class DFA(NFA.NFA):
             self.translate_to_doa(study_mode+"/one_letter_NFA.doa")
 
     def __make_determined(self):
-
+        """Tompson's alg."""
         for q in self.states:
             if q not in self.transitions:
                 self.transitions[q] = dict()
@@ -87,6 +95,7 @@ class DFA(NFA.NFA):
         self.states = new_states
 
     def make_complete_dfa(self, study_mode=""):
+        """Make DFA completed, adding 'trash' state"""
         flag_added_new_ways = False
         trsh = 'X'
         while trsh in self.states:
@@ -105,6 +114,7 @@ class DFA(NFA.NFA):
             self.translate_to_doa(study_mode+"/CDFA.doa")
 
     def __make_one_or_zero_letter_transitions(self):
+        """NFA -> <=1-letter NFA"""
         state_cnt = len(self.states)
         new_transitions = copy.deepcopy(self.transitions)
         new_states = self.states.copy()
@@ -131,6 +141,7 @@ class DFA(NFA.NFA):
         self.transitions = new_transitions
 
     def __compress_eps_transitions(self):
+        """To compress EPS ways"""
         new_transitions = copy.deepcopy(self.transitions)
         for q_start in self.states:
             accept_start = False
@@ -150,6 +161,7 @@ class DFA(NFA.NFA):
         self.transitions = new_transitions
 
     def __compressing(self, q_from, q_to, transitions, used):
+        """Helper function, used for searching and compressing all EPS ways from q_from"""
         transitions[q_from]['EPS'] += [q_to]
         used.append(q_to)
         accept = q_to in self.accept_states
@@ -161,6 +173,7 @@ class DFA(NFA.NFA):
         return accept
 
     def __delete_eps_transitions(self):
+        """Deleting EPS ways, replacing them with 1-letter transitions"""
         new_transitions = copy.deepcopy(self.transitions)
         for q_from in self.transitions:
             if 'EPS' in self.transitions[q_from]:
@@ -180,6 +193,7 @@ class DFA(NFA.NFA):
         self.states = new_states
 
     def __dfs_deleting_unreached(self, transitions, states):
+        """Searching unreached states to delete"""
         used = list()
         self.__dfs_for_deleting(used, transitions, self.start_state)
         for q in self.states:
@@ -191,6 +205,7 @@ class DFA(NFA.NFA):
                     transitions.pop(q)
 
     def __dfs_for_deleting(self, used, transitions, q):
+        """Helper function. dfs from self.start"""
         used.append(q)
         if transitions.get(q, False):
             for letter in transitions[q]:

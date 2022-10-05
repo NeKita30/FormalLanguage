@@ -2,6 +2,9 @@ from sources.parse_and_translate import parsers, translaters
 
 
 class NFA:
+    """NFA. Can be build from regex or doa_file
+    Can be translated to .doa
+    Can recognize words in language"""
     def __init__(self, alphabet=None, regex="", doa_file=""):
         self.states = list()
         self.alphabet = alphabet
@@ -17,9 +20,11 @@ class NFA:
         pass
 
     def translate_to_doa(self, file):
+        """Translate to .doa"""
         translaters.translate_to_doa(file, self.states, self.transitions, self.start_state, self.accept_states)
 
     def recognize(self, w, q=None, used=None):
+        """Check is word w in language or not"""
         if q is None:
             q = self.start_state
         if w == "" and q in self.accept_states:
@@ -39,6 +44,7 @@ class NFA:
         return False
 
     def __read_regex(self, regex):
+        """parse regex"""
         flag_check_alphabet = False
         check_alphabet = set()
         if self.alphabet is not None:
@@ -50,6 +56,7 @@ class NFA:
         self.alphabet = ''.join(check_alphabet)
 
     def __read_doa(self, file):
+        """parse .doa file"""
         flag_check_alphabet = False
         check_alphabet = set()
         if self.alphabet is not None:

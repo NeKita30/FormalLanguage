@@ -3,12 +3,15 @@ import copy
 
 
 class MinCDFA(DFA.DFA):
+    """MinCDFA
+    Can be build in both ways as NFA"""
     def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True):
         super().__init__(alphabet, regular, doa_file, to_dfa)
         self.make_complete_dfa()
         self.__make_min()
 
     def __make_min(self):
+        """Build canonical automaton for CDFA"""
         states = dict()
         new_states = dict.fromkeys(self.states, '0')
         new_transitions = copy.deepcopy(self.transitions)
@@ -25,6 +28,7 @@ class MinCDFA(DFA.DFA):
         self.accept_states = list(set([states[q_f] for q_f in self.accept_states]))
 
     def __new_states_and_transitions(self, old_states, new_states, new_transitions):
+        """Alg. from seminar, makes new transitions and states by searching new classes"""
         cnt = 0
         lst_id = dict()
         for state in self.states:
@@ -38,5 +42,6 @@ class MinCDFA(DFA.DFA):
             new_states[state] = lst_id[state_id]
 
     def __make_first_classes(self, new_states):
+        """First class - accept and not accept states"""
         for q in self.accept_states:
             new_states[q] = '1'
