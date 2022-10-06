@@ -5,8 +5,8 @@ import copy
 class MinCDFA(DFA.DFA):
     """MinCDFA
     Can be build in both ways as NFA"""
-    def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True):
-        super().__init__(alphabet, regular, doa_file, to_dfa)
+    def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True, study_mode=""):
+        super().__init__(alphabet, regular, doa_file, to_dfa, study_mode)
         self.make_complete_dfa()
         self.__make_min()
 

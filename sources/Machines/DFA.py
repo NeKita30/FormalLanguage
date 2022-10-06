@@ -196,7 +196,8 @@ class DFA(NFA.NFA):
         """Searching unreached states to delete"""
         used = list()
         self.__dfs_for_deleting(used, transitions, self.start_state)
-        for q in self.states:
+        _states = states.copy()
+        for q in _states:
             if q not in used:
                 states.remove(q)
                 if q in self.accept_states:

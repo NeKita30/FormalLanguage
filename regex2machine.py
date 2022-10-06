@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 args.doa_name = os.path.join(os.getcwd(), args.doa_name)
 if args.mincdfa:
-    machine = MinCDFA.MinCDFA(args.alphabet, args.regex)
+    machine = MinCDFA.MinCDFA(args.alphabet, args.regex, study_mode=args.study_mode)
 elif args.dfa or args.cdfa:
     machine = DFA.DFA(args.alphabet, args.regex, study_mode=args.study_mode)
     if args.cdfa:
