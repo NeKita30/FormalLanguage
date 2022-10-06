@@ -1,0 +1,39 @@
+DOA: v1
+Start: 0
+Acceptance: 4&11&13&14&16
+--BEGIN--
+State: 0
+ -> EPS 1
+ -> a 5
+State: 1
+ -> a 2
+State: 2
+ -> b 3
+State: 3
+ -> EPS 3
+ -> EPS 4
+State: 4
+State: 5
+ -> EPS 6
+State: 6
+ -> EPS 7
+State: 7
+ -> c 7
+ -> EPS 8
+State: 8
+ -> a 9
+ -> EPS 10
+ -> EPS 12
+State: 9
+State: 10
+ -> c 11
+State: 11
+State: 12
+ -> EPS 14
+ -> a 13
+State: 13
+State: 14
+State: 15
+ -> a 16
+State: 16
+--END--

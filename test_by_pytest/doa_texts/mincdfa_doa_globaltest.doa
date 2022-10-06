@@ -1,0 +1,26 @@
+DOA: v1
+Start: 0
+Acceptance: 3&4&7&8
+--BEGIN--
+State: 0
+ -> ab 1
+ -> ab 5
+ -> EPS 1
+State: 1
+ -> c 2
+ -> d 4
+State: 2
+ -> a 8
+ -> b 3
+State: 3
+ -> b 3
+ -> d 4
+State: 4
+State: 5
+ -> c 6
+State: 6
+ -> a 7
+ -> EPS 3
+State: 7
+State: 8
+--END--

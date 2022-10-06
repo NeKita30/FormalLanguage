@@ -1,0 +1,19 @@
+DOA: v1
+Start: 0
+Acceptance: 4
+--BEGIN--
+State: 0
+ -> ab 1
+ -> cd 5
+State: 1
+ -> abc 2
+ -> abc 3
+State: 2
+ -> d 4
+State: 3
+ -> EPS 4
+State: 4
+State: 5
+ -> abc 3
+ -> abcd 4
+--END--
