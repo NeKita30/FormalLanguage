@@ -13,13 +13,13 @@ def list_all_words(alphabet, length):
 
 def test_min_cdfa_make_first_classes(mocker):
     mocker.patch('sources.Machines.MinCDFA.MinCDFA._MinCDFA__new_states_and_transitions')
-    mcdfa = MinCDFA.MinCDFA(doa_file='test_by_pytest/doa_texts/mincdfa_doa_pretest.doa', to_dfa=False)
+    mcdfa = MinCDFA.MinCDFA(doa_file='test_dfa_by_pytest/doa_texts/mincdfa_doa_pretest.doa', to_dfa=False)
 
     assert set(mcdfa.states) == {'0', '1'}
 
 
 def test_min_cdfa_make_min():
-    mcdfa = MinCDFA.MinCDFA(doa_file='test_by_pytest/doa_texts/mincdfa_doa_pretest.doa')
+    mcdfa = MinCDFA.MinCDFA(doa_file='test_dfa_by_pytest/doa_texts/mincdfa_doa_pretest.doa')
 
     assert set(mcdfa.states) == {'0', '1', '2', '3', '4', '5'}
     assert mcdfa.transitions['0']['a'] == ['1']
@@ -27,8 +27,8 @@ def test_min_cdfa_make_min():
 
 
 def test_min_cdfa_global():
-    mcdfa = MinCDFA.MinCDFA(doa_file='test_by_pytest/doa_texts/mincdfa_doa_globaltest.doa')
-    nfa = NFA.NFA(doa_file='test_by_pytest/doa_texts/mincdfa_doa_globaltest.doa')
+    mcdfa = MinCDFA.MinCDFA(doa_file='test_dfa_by_pytest/doa_texts/mincdfa_doa_globaltest.doa')
+    nfa = NFA.NFA(doa_file='test_dfa_by_pytest/doa_texts/mincdfa_doa_globaltest.doa')
     
     for length in range(10):
         for word in list_all_words(mcdfa.alphabet, length):

@@ -4,8 +4,9 @@ Programming languages used: Python 3.9
 Test tools: pytest, pytest-cov
 
 Tasks completed:  
-NFA to DFA, MinDFA
+1) **NFA to DFA, MinDFA**
 
+## 1) NFA to DFA, MinDFA 
 To convert NFA to DFA, CDFA, MinCDFA, use `nfa2dfa.py`:
 
 usage: `nfa2dfa.py [-h] [--alphabet ALPHABET] --nfa_doa NFA_DOA [-cdfa] [-mincdfa] [--dfa_doa DFA_DOA] [-graph] [--graph_name GRAPH_NAME]`
@@ -51,11 +52,11 @@ It will make a NFA fron regex ((ab)* + c)(ab + ε), then build CDFA and write it
 ### To run test:
 (write commands in root of project)  
 `pytest --cov=sources.Machines -vv` (classical way)  
-`coverage run --source=sources.Machines -m pytest -vv test_by_pytest && coverage report -m`
+`coverage run --source=sources.Machines -m pytest -vv test_dfa_by_pytest && coverage report -m`
 (this command shows missing lines)
 
 ### Structure:
 `sources.Machines`: `NFA.py, DFA.py and MinCDFA.py`  
-`sources.parse_and_translate`: parsing (regex <-> nfa), translation (.doa <-> machine)  
-`test_by_pytest`: pytests and .doa files for tests  
+`sources.parse_and_translate`: parsing_dfa (regex <-> nfa), translation_dfa (.doa <-> machine)  
+`test_dfa_by_pytest`: pytests and .doa files for tests  
 `borrowing`: Mikhail's code of translation (with my modifications)

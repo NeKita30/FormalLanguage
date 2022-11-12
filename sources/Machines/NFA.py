@@ -1,4 +1,4 @@
-from sources.parse_and_translate import parsers, translaters
+from sources.parse_and_translate import parsers_dfa, translaters_dfa
 
 
 class NFA:
@@ -21,7 +21,7 @@ class NFA:
 
     def translate_to_doa(self, file):
         """Translate to .doa"""
-        translaters.translate_to_doa(file, self.states, self.transitions, self.start_state, self.accept_states)
+        translaters_dfa.translate_to_doa(file, self.states, self.transitions, self.start_state, self.accept_states)
 
     def recognize(self, w, q=None, used=None):
         """Check is word w in language or not"""
@@ -51,8 +51,9 @@ class NFA:
             flag_check_alphabet = True
             check_alphabet = set(self.alphabet)
 
-        self.start_state = parsers.parse_reverse_polish(regex, flag_check_alphabet, check_alphabet, self.accept_states,
-                                                        self.states, self.transitions)
+        self.start_state = parsers_dfa.parse_reverse_polish(regex, flag_check_alphabet, check_alphabet,
+                                                            self.accept_states,
+                                                            self.states, self.transitions)
         self.alphabet = ''.join(check_alphabet)
 
     def __read_doa(self, file):
@@ -63,6 +64,6 @@ class NFA:
             flag_check_alphabet = True
             check_alphabet = set(self.alphabet)
 
-        self.start_state = translaters.translate_from_doa(file, self.states, flag_check_alphabet,
-                                                          check_alphabet, self.transitions, self.accept_states)
+        self.start_state = translaters_dfa.translate_from_doa(file, self.states, flag_check_alphabet,
+                                                              check_alphabet, self.transitions, self.accept_states)
         self.alphabet = ''.join(check_alphabet)

@@ -9,6 +9,8 @@ class DFA(NFA.NFA):
     """
     def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True, study_mode=""):
         super().__init__(alphabet, regular, doa_file)
+        if study_mode:
+            self.translate_to_doa(study_mode + "/NFA.doa")
         if to_dfa:
             self.__make_dfa(study_mode)
 
@@ -86,7 +88,8 @@ class DFA(NFA.NFA):
         self.transitions = tompson
         for accept in self.accept_states:
             for new_state in new_states:
-                if accept in new_state.split('_') and new_state not in new_accept_states:
+                if accept in new_state.split('_') and new_state not in new_accept_states \
+                        and new_state not in self.states:
                     new_accept_states.append(new_state)
 
         self.accept_states = new_accept_states

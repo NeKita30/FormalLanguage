@@ -13,7 +13,7 @@ def translate_to_doa(file, states, transitions, start_state, accept_states):
         file.write("--BEGIN--\n")
         for q in states:
             file.write(f"State: {q}\n")
-            for letter in transitions.setdefault(q, []):
+            for letter in transitions.get(q, []):
                 for trans in transitions[q][letter]:
                     file.write(f" -> {letter} {trans}\n")
         file.write("--END--")

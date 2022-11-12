@@ -10,7 +10,7 @@ def test_nfa_recognize_first():
 
 
 def test_nfa_recognize_second():
-    nfa = NFA.NFA(doa_file="test_by_pytest/doa_texts/nfa_test_recognize.doa")
+    nfa = NFA.NFA(doa_file="test_dfa_by_pytest/doa_texts/nfa_test_recognize.doa")
     assert not nfa.recognize("aa")
     assert nfa.recognize("baaaa")
     assert not nfa.recognize("b")

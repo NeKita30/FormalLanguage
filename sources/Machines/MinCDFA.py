@@ -8,6 +8,8 @@ class MinCDFA(DFA.DFA):
     def __init__(self, alphabet=None, regular="", doa_file="", to_dfa=True, study_mode=""):
         super().__init__(alphabet, regular, doa_file, to_dfa, study_mode)
         self.make_complete_dfa()
+        if study_mode:
+            self.translate_to_doa(study_mode + "/CDFA.doa")
         self.__make_min()
 
     def __make_min(self):

@@ -2,7 +2,7 @@ from sources.Machines import DFA
 
 
 def test_dfa_recognize():
-    dfa = DFA.DFA(doa_file="test_by_pytest/doa_texts/dfa_test_recognize.doa")
+    dfa = DFA.DFA(doa_file="test_dfa_by_pytest/doa_texts/dfa_test_recognize.doa")
     dfa.make_complete_dfa()
 
     assert dfa.recognize("abf")
