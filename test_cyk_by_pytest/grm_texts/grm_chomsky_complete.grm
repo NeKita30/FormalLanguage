@@ -1,0 +1,11 @@
+Nonterm.: A B C D E F G H
+Alphabet: a b
+Start: A
+A -> AbBa | a | ε
+B -> CD | ε | b
+C -> DE | D
+F -> a | GF
+G -> b | ε
+H -> aH
+D -> a | ε
+E -> ε | b

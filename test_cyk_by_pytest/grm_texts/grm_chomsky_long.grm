@@ -1,0 +1,8 @@
+Nonterm.: A B C D E F
+Alphabet: a b
+Start: A
+A -> AB | CA | ε
+B -> BDCD
+C -> BAD|CDE|EDF
+E -> AD|DCFE|E
+F -> A|ε|E

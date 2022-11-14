@@ -1,0 +1,8 @@
+Nonterm.: A B C D E
+Alphabet: a b c
+Start: A
+A -> B | BD | a
+B -> C | CD | b
+C -> DE | D
+D -> a
+E -> DE | b
