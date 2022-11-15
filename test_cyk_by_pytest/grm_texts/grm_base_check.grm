@@ -1,4 +1,17 @@
-Nonterm.: S
-Alphabet: ( ) [ ] { }
-Start: S
-S -> ε | (S)S | [S]S | {S}S
+Nonterm.: Stat InStat Func Lst Contain If Num Dig As For Whl Var Exp Arif
+Alphabet: 1 2 3 4 5 6 7 8 9 0 ( ) + - * / = [ ] { } , : _ for in range while if elif else print sum a b c d x y z \n
+Start: Stat
+Stat -> If\nStat | As\nStat | For\nStat | Whl\nStat | Exp\nStat | ε
+InStat -> ____As\nInStat | ____Exp\nInStat | ____As\n | ____Exp\n
+Exp -> Func | Contain | Num | Arif
+Dig -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+Num -> DigNum | Dig
+Func -> print(Exp) | sum(Contain)
+Contain -> [Lst] | (Lst,) | {Lst} | range(Num)
+Lst -> Exp,Lst | Exp
+If -> if_Exp:\nInStat\nelif_Exp:\nInStat\nelse:\nInStat
+As -> Var_=_Exp
+Var -> aVar|bVar|cVar|dVar|xVar|yVar|zVar|a|b|c|d|x|y|z
+For -> for_Var_in_Contain:\nInStat
+Whl -> while_Exp:\nInStat
+Arif -> (Arif) | Arif_+_Arif | Arif_-_Arif | Arif_*_Arif | Arif_/_Arif | Num

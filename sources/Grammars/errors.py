@@ -13,7 +13,7 @@ Nonterm.: A B A_1 C D\\B
 but get:
 {self.args[0]}"""
 
-        if self.code == "non-term":
+        if self.code == "term":
             return f"""Wrong alphabet line - should be:
 Alphabet: a b c a_1 a_2 
 but get:
@@ -42,12 +42,3 @@ A -> a  or
 A -> A...B  or
 A -> AaBbcD  or
 A -> Ab | Bd | A_1A_2 | ε"""
-
-
-class ConvertingGrammarError(Exception):
-    def __init__(self, code="", *args):
-        self.code = code
-        self.args = args
-
-    def __str__(self):
-        pass

@@ -1,2 +1,3 @@
 from sources.Grammars.Grammar import Grammar
-__all__ = ['Grammar']
+from sources.Grammars.CockeYoungerKasami import CockeYoungerKasami
+__all__ = ['Grammar', 'CockeYoungerKasami']
