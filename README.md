@@ -90,7 +90,8 @@ After typing word, program will determine does this word belong to program or no
 `sources.Grammars.Grammars.py`: grammar class\
 `sources.Grammars.rule.py`: rule class\
 `sources.Grammars.constant.py`: epsilon variable\
-`sources.Grammars.errors.py`: \
+`sources.Grammars.errors.py`: file for exceptions\
 `sources.Grammars.CockeYoungerKasami.py`: Cocke-Younger-Kasami algorithm
 `sources/parse_and_translate/translaters_grammar.py`: Translater .grm <-> Grammar
+`test_cyk_by_pytest`: pytest and .grm files for testing
 

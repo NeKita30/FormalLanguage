@@ -12,41 +12,37 @@ class CockeYoungerKasami:
         if word == '':
             return (EPS,) in self.grammar.rules[self.grammar.start].rights
 
-        check_dict: dict[str, dict[tuple[int, int], bool]] = dict()
-        self.__init_check_dict_for_one_letters(word, check_dict)
-        self.__init_all_check_dict(word, check_dict)
+        check_list: list[list[list[bool]]] = [[[False for i in range(len(word) + 1)]
+                                               for j in range(len(word))]
+                                              for k in range(len(self.grammar.rules))]
+        number_of_nonterm = {nonterm: i for i, nonterm in enumerate(self.grammar.rules.keys())}
+        self.__init_check_dict_for_one_letters(word, check_list, number_of_nonterm)
+        self.__init_all_check_dict(word, check_list, number_of_nonterm)
 
-        if self.grammar.start not in check_dict:
-            return False
-        return check_dict[self.grammar.start][(0, len(word))]
+        return check_list[number_of_nonterm[self.grammar.start]][0][len(word)]
 
     def __init_check_dict_for_one_letters(self, word: str,
-                                          check_dict: dict[str, dict[tuple[int, int], bool]]):
+                                          check_list: list[list[list[bool]]],
+                                          ind_nonterm: dict[str, int]):
         for ind, symbol in enumerate(word):
             for rule in self.grammar.rules.values():
                 for transition in rule.rights:
                     if transition[0] in self.grammar.alphabet:
                         if symbol == transition[0]:
-                            check_dict.setdefault(rule.left, dict())[(ind, ind + 1)] = True
+                            check_list[ind_nonterm[rule.left]][ind][ind + 1] = True
 
     def __init_all_check_dict(self, word: str,
-                              check_dict: dict[str, dict[tuple[int, int], bool]]):
+                              check_list: list[list[list[bool]]],
+                              ind: dict[str, int]):
         for length in range(2, len(word) + 1):
             for start_ind in range(len(word) - length + 1):
                 end_ind = start_ind + length
                 for rule in self.grammar.rules.values():
                     for transition in rule.rights:
                         if len(transition) == 2:
-                            B = transition[0]
-                            C = transition[1]
+                            left = transition[0]
+                            right = transition[1]
                             for middle in range(start_ind + 1, end_ind):
-                                check_dict[rule.left][start_ind, end_ind] = \
-                                    check_dict.setdefault(rule.left,
-                                                          dict()).setdefault((start_ind,
-                                                                              end_ind), False) or \
-                                    check_dict.setdefault(B,
-                                                          dict()).setdefault((start_ind,
-                                                                              middle), False) and \
-                                    check_dict.setdefault(C,
-                                                          dict()).setdefault((middle,
-                                                                              end_ind), False)
+                                check_list[ind[rule.left]][start_ind][end_ind] |= \
+                                    check_list[ind[left]][start_ind][middle] and \
+                                    check_list[ind[right]][middle][end_ind]
