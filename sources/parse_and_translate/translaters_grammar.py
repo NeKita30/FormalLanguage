@@ -122,7 +122,7 @@ def __gen_right(right_str, nonterminal, alphabet):
                 stck = ""
                 stck_is_valid_symbol = new_suff_stck_is_valid_symbol
             else:
-                raise err.TranslateGrammarError("unknown-symbol", stck, right_str)
+                raise err.TranslateGrammarError("unknown-symbol", stck+ch, right_str)
         else:
             stck_is_valid_symbol = new_stck_is_valid_symbol
         stck += ch
