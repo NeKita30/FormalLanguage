@@ -9,7 +9,8 @@ class Rule:
     def add(self, right: tuple = tuple()):
         if not right:
             right = (EPS,)
-        self.rights.append(right)
+        if right not in self.rights:
+            self.rights.append(right)
 
     def __str__(self):
         return f"{self.left} -> {'|'.join(list(map(''.join, self.rights)))}"

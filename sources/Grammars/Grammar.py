@@ -35,7 +35,7 @@ class Grammar:
             changes = False
             new_word = list()
             for symbol in word:
-                new_symbols = symbol
+                new_symbols = (symbol,)
                 if symbol in self.nonterminals:
                     changes |= True
                     if limit == 0 and (EPS,) in self.rules[symbol].rights:
@@ -43,7 +43,7 @@ class Grammar:
                     else:
                         new_symbols = random.choice(self.rules[symbol].rights)
                         if new_symbols != (EPS,):
-                            limit -= 1
+                            limit = 0 if limit == 0 else limit - 1
                 new_word += new_symbols
             word = new_word
             if not changes:
@@ -135,6 +135,7 @@ class Grammar:
     def __delete_long_transitions(self):
         new_rules = dict()
         number = 0
+        long_transition_replace = dict()
         for left, rule in self.rules.items():
             new_rules[left] = Rule(left)
             for transition in rule.rights:
@@ -144,9 +145,12 @@ class Grammar:
                     if ind == len(transition) - 2:
                         new_right.append(next_symbol)
                         continue
-                    new_nonterminal = Grammar.__search_new_nonterminal(
-                        self.nonterminals + self.alphabet, end="_" + str(number := number + 1)
-                    )
+                    if transition[ind + 1:] in long_transition_replace:
+                        new_nonterminal = long_transition_replace[transition[ind + 1:]]
+                    else:
+                        new_nonterminal = Grammar.__search_new_nonterminal(
+                            self.nonterminals + self.alphabet, end="_" + str(number := number + 1))
+                        long_transition_replace[transition[ind + 1:]] = new_nonterminal
                     self.nonterminals.append(new_nonterminal)
                     new_right.append(new_nonterminal)
                     new_rules[new_left].add(tuple(new_right))
@@ -201,7 +205,8 @@ class Grammar:
             for transition in rule.rights:
                 if len(transition) == 1 and transition[0] in self.nonterminals:
                     non_term_through = transition[0]
-                    self.__compressing_transitions(non_term_from, non_term_through, new_rules)
+                    used = [non_term_from]
+                    self.__compressing_transitions(non_term_from, non_term_through, new_rules, used)
                     new_rules[non_term_from].rights.remove(transition)
         self.rules = new_rules
 
@@ -278,12 +283,15 @@ class Grammar:
             self.rules = new_rules
             self.nonterminals = new_nonterminal
 
-    def __compressing_transitions(self, non_term_from, non_term_through, new_rules):
+    def __compressing_transitions(self, non_term_from, non_term_through, new_rules, used):
+        if non_term_through in used:
+            return
+        used.append(non_term_through)
         for transition in new_rules[non_term_through].rights:
             if len(transition) == 2 or transition[0] in self.alphabet:
                 new_rules[non_term_from].add(transition)
-            else:
-                self.__compressing_transitions(non_term_from, transition[0], new_rules)
+            elif transition[0] != non_term_from:
+                self.__compressing_transitions(non_term_from, transition[0], new_rules, used)
 
     @staticmethod
     def __search_new_nonterminal(lst_symbols, *, start="", end="", mode=65):
