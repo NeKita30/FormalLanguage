@@ -68,6 +68,9 @@ class Grammar:
                     return False
         return True
 
+    def add_new_start(self):
+        self.__add_new_start(False)
+
     def __delete_no_generating_nonterminals(self):
         lst_no_generating_nonterminals = self.__mark_non_generating_nonterminals()
         for nonterminal in self.nonterminals:

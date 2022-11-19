@@ -1,4 +1,4 @@
 Nonterm.: S
-Alphabet: ( ) [ ] { }
+Alphabet: ( )
 Start: S
-S -> ε | (S)S | [S]S | {S}S
+S -> ε | (S)S
