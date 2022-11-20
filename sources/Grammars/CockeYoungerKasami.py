@@ -3,12 +3,18 @@ from sources.Grammars.constant import EPS
 
 
 class CockeYoungerKasami:
+    """Cocke-Younger-Kasami algorithm,
+    Usage: create an object for some grammar,
+    with check_word_occurrence method check
+    if given word belongs to grammar language"""
     def __init__(self, grammar: Grammar, convert_to_chomsky: bool = True):
+        """Build CYK object, optional convert to Chomsky normal form"""
         if convert_to_chomsky:
             grammar.convert_to_chomsky_normal_form()
         self.grammar = grammar
 
     def check_word_occurrence(self, word: str):
+        """Return True if word belongs to grammar language"""
         if word == '':
             return (EPS,) in self.grammar.rules[self.grammar.start].rights
 

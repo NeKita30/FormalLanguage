@@ -7,7 +7,9 @@ import sources.Grammars.errors as err
 
 
 class Grammar:
+    """Context-free grammar class"""
     def __init__(self, grm_file: str):
+        """Build grammar by .grm file"""
         self.rules: dict[str, Rule] = dict()
         self.alphabet: list[str] = list()
         self.nonterminals: list[str] = list()
@@ -15,9 +17,12 @@ class Grammar:
         translaters_grammar.translate_from_grm(grm_file, self)
 
     def write_as_grm(self, grm_file: str):
+        """Translate to and write .grm file"""
         translaters_grammar.translate_to_grm(grm_file, self)
 
     def convert_to_chomsky_normal_form(self, study_mode: str = ""):
+        """Convert to chomsky normal form,
+        7 steps. In study mode: for each step write .grm form"""
         converting_to_chomsky_process = [self.__delete_no_generating_nonterminals,
                                          self.__delete_unreachable_nonterminals,
                                          self.__delete_mixed_transitions,
@@ -30,6 +35,8 @@ class Grammar:
                 self.write_as_grm(f"{study_mode}_step_{step + 1}.grm")
 
     def generate_word(self, limit=-1):
+        """Generate a random word that belongs to language,
+        optional - with limited length"""
         word = [self.start]
         while True:
             changes = False
@@ -52,6 +59,7 @@ class Grammar:
         return word
 
     def check_chomsky_form(self):
+        """Check chomsky normal from"""
         for left, rule in self.rules.items():
             for transition in rule.rights:
                 if len(transition) == 1:
@@ -69,6 +77,7 @@ class Grammar:
         return True
 
     def __delete_no_generating_nonterminals(self):
+        """Deleting non-generating nonterminals"""
         lst_no_generating_nonterminals = self.__mark_non_generating_nonterminals()
         for nonterminal in self.nonterminals:
             if nonterminal in lst_no_generating_nonterminals:
@@ -88,6 +97,7 @@ class Grammar:
         self.nonterminals = list(self.rules.keys())
 
     def __delete_unreachable_nonterminals(self):
+        """Deleting unreachable nonterminals"""
         if self.start not in self.nonterminals:
             self.nonterminals.clear()
             self.rules.clear()
@@ -108,6 +118,7 @@ class Grammar:
         self.nonterminals = reached
 
     def __delete_mixed_transitions(self):
+        """Deleting rules with not unit terminal"""
         new_rules = dict()
         terminal_replace = dict()
         for left, rule in self.rules.items():
@@ -133,6 +144,7 @@ class Grammar:
         self.rules = new_rules
 
     def __delete_long_transitions(self):
+        """Deleting rules with more than 2 nonterminals"""
         new_rules = dict()
         number = 0
         long_transition_replace = dict()
@@ -161,6 +173,7 @@ class Grammar:
         self.rules = new_rules
 
     def __delete_eps_transitions(self):
+        """Deleting rules with empty word"""
         eps_transitions = list()
         new_nonterminal = self.nonterminals.copy()
         new_rules = copy.deepcopy(self.rules)
@@ -190,6 +203,8 @@ class Grammar:
         self.__add_new_start(empty_word_in_language)
 
     def __add_new_start(self, empty_word_in_language):
+        """Adding new start nonterminal with transition to old one,
+        if empty word belongs to language than adding empty transition"""
         new_term = Grammar.__search_new_nonterminal(self.nonterminals + self.alphabet,
                                                     start=self.start + '_', mode=48)
         self.nonterminals.append(new_term)
@@ -200,6 +215,7 @@ class Grammar:
             self.rules[self.start].add((EPS,))
 
     def __delete_unit_transitions(self):
+        """Deleting rules with unit nonterminals"""
         new_rules = copy.deepcopy(self.rules)
         for non_term_from, rule in self.rules.items():
             for transition in rule.rights:
@@ -211,6 +227,7 @@ class Grammar:
         self.rules = new_rules
 
     def __make_dependences_dict(self) -> dict[str, set]:
+        """Make links to nonterminals which generate given one"""
         dependences = dict()
         for nonterminal, rule in self.rules.items():
             for transition in rule.rights:
@@ -220,6 +237,7 @@ class Grammar:
         return dependences
 
     def __mark_non_generating_nonterminals(self):
+        """To mark non generating nonterminals"""
         dependences = self.__make_dependences_dict()
         lst_no_generating_nonterminals = self.nonterminals.copy()
         queue = list(self.rules.items())
@@ -239,11 +257,13 @@ class Grammar:
         return lst_no_generating_nonterminals
 
     def __mark_eps_transitions(self, eps_transitions):
+        """To mark rules with epsilon"""
         for rule in self.rules.values():
             if (EPS,) in rule.rights:
                 eps_transitions.append(rule.left)
 
     def __adding_new_rules_for_eps_generating(self, new_rules, eps_generating):
+        """Adding new rules: for A->BC adds A->B, where C - eps generating"""
         for left, rule in self.rules.items():
             for transition in rule.rights:
                 if len(transition) == 2:
@@ -255,6 +275,8 @@ class Grammar:
                             new_rules[left].add((transition[0],))
 
     def __deleting_eps(self, dependences, eps_transitions):
+        """Deleting epsilon rules,
+        if that the only one rule from nonterminal - deleting this nonterminal"""
         transition_eps_count = dict()
         queue = eps_transitions.copy()
         while queue:
@@ -284,6 +306,7 @@ class Grammar:
             self.nonterminals = new_nonterminal
 
     def __compressing_transitions(self, non_term_from, non_term_through, new_rules, used):
+        """Adding new transition instead of unit nonterminal rules? using dfs"""
         if non_term_through in used:
             return
         used.append(non_term_through)
@@ -295,6 +318,7 @@ class Grammar:
 
     @staticmethod
     def __search_new_nonterminal(lst_symbols, *, start="", end="", mode=65):
+        """Searching new nonterminal name. Optional with some prefix, suffix"""
         new_nonterm = ""
         shift = mode
         while start + new_nonterm + chr(shift) + end in lst_symbols:
