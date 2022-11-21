@@ -1,0 +1,9 @@
+Nonterm: A B C A_c A_1 A_0
+Alphabet: a b c
+Start: A_0
+A -> BA_1|a
+A_1 -> CA
+B -> b
+A_c -> c
+C -> A_cC|c
+A_0 -> BA_1|a

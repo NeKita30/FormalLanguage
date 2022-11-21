@@ -1,0 +1,10 @@
+Nonterm.: A A_b B C D E F G
+Alphabet: a b
+Start: A
+A -> AB | CaA | ε
+B -> a | aDFbE
+C -> FG
+G -> aEFbaD
+F -> ab
+E -> aDa | aa
+D -> Db | ε
