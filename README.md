@@ -5,6 +5,7 @@ Test tools: pytest, pytest-cov
 
 Tasks completed:  
 1) **NFA to DFA, MinDFA**
+3) **Early**
 
 ## 1) NFA to DFA, MinDFA 
 To convert NFA to DFA, CDFA, MinCDFA, use `nfa2dfa.py`:
@@ -60,3 +61,24 @@ It will make a NFA fron regex ((ab)* + c)(ab + ε), then build CDFA and write it
 `sources.parse_and_translate`: parsing_dfa (regex <-> nfa), translation_dfa (.doa <-> machine)  
 `test_dfa_by_pytest`: pytests and .doa files for tests  
 `borrowing`: Mikhail's code of translation (with my modifications)
+
+
+## 3) Early
+To determine, does a given word belong to a language expressed by given grammar, use earley_algo.py:
+
+usage: `earley_algo.py [-h] --grammar GRAMMAR [-notstart]`
+
+options: \
+  -h, --help.....................................show this help message and exit \
+  --grammar.........GRAMMAR.......grammar description, .grm file \
+  -notstart......................................not add new start nonterminal
+
+Example (write command in root of project):\
+`python3 earley_algo.py --grammar='path_to/grm_file.grm'` \
+As a result you will see:\
+`Type Cntr+D to exit` \
+`Word:` \
+After typing word, program will determine does this word belong to program or not.
+
+### Structure ###
+`sources.Grammars.Earley.py:` Earley algorithm
