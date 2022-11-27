@@ -5,6 +5,7 @@ Test tools: pytest, pytest-cov
 
 Tasks completed:  
 1) **NFA to DFA, MinDFA**
+2) **CYK**
 3) **Early**
 
 ## 1) NFA to DFA, MinDFA 
@@ -62,6 +63,38 @@ It will make a NFA fron regex ((ab)* + c)(ab + ε), then build CDFA and write it
 `test_dfa_by_pytest`: pytests and .doa files for tests  
 `borrowing`: Mikhail's code of translation (with my modifications)
 
+## 2) CYK
+To determine, does a given word belong to a language expressed by given grammar, use  `cyk_algo.py`:
+usage: `cyk_algo.py [-h] --grammar GRAMMAR [-cnf]`
+
+options:\
+-h, --help...................................show this help message and exit\
+--grammar.......GRAMMAR.......grammar description, .grm file\
+-cnf...........................................do not convert to chomsky normal form
+
+Example (write command in root of project):\
+`python3 cyk_algo.py --grammar='path_to/grm_file.grm'`\
+As a result you will see:\
+`Type Cntr+D to exit`\
+`Word: `\
+After typing word, program will determine does this word belong to program or not.
+
+### .grm format ###
+`Nonterm.: A B A_1 BA Cf C'`\
+`Alphabet: a b c for print Key`\
+`Start: A`\
+`A -> a|AB|A_1BA`\
+`B -> BA | c | d`\
+`A_1 -> a | ε`
+
+### Structure ###
+`sources.Grammars.Grammars.py`: grammar class\
+`sources.Grammars.rule.py`: rule class\
+`sources.Grammars.constant.py`: epsilon variable\
+`sources.Grammars.errors.py`: file for exceptions\
+`sources.Grammars.CockeYoungerKasami.py`: Cocke-Younger-Kasami algorithm
+`sources/parse_and_translate/translaters_grammar.py`: Translater .grm <-> Grammar
+`test_cyk_by_pytest`: pytest and .grm files for testing
 
 ## 3) Early
 To determine, does a given word belong to a language expressed by given grammar, use earley_algo.py:
