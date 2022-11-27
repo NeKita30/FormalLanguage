@@ -33,6 +33,9 @@ class Grammar:
             function()
             if study_mode:
                 self.write_as_grm(f"{study_mode}_step_{step + 1}.grm")
+    
+    def add_new_start(self):
+        self.__add_new_start(False)
 
     def generate_word(self, limit=-1):
         """Generate a random word that belongs to language,
