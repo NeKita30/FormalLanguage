@@ -1,0 +1,28 @@
+Nonterm.: S A B C D E F G Q J R
+Alphabet: a b c
+Start: S
+S -> A
+A -> B
+B -> ε
+S -> ABBA
+B -> ABBA
+A -> CCC
+A -> AB
+A -> CaA
+A -> ε
+B -> a
+B -> aDFbE
+C -> FG
+G -> aEFbaD
+F -> ab
+E -> aDa
+E -> aa
+D -> Db
+D -> ε
+D -> SSS
+S -> baDAab
+S -> Q
+Q -> BabaA
+R -> R
+E -> ε
+J -> QRE
