@@ -1,0 +1,8 @@
+Nonterm.: S A B C D
+Alphabet: a b c
+Start: S
+S -> S | ABS | ABSC | D | ε
+A -> a | aAD | AC
+B -> bB | D
+C -> CC | CA
+D -> cbc
